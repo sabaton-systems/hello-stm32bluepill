@@ -1,4 +1,4 @@
-# Drive-By-Wire board STM32
+# Hello World on STM32 Bluepill
 
 ## Dependencies
 
