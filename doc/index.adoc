@@ -1,0 +1,14 @@
+==== Connecting the STLink debugger.
+
+The STLink V2 programmer is needed to flash the software image to the BluePill microcontroller 
+board.
+
+[#img-stlink]
+.STLink Programmer
+image::images/stlink.png[STLink Programmer]
+
+The STLink programmer should be connected to the blue-pill as shown in the following diagram.
+[#img-stlinkconnection]
+.STLink Programmer
+image::images/stlink_connector.png[STLink connection to Bluepill]
+
