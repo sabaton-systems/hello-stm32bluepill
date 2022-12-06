@@ -36,7 +36,7 @@ You already know where the source code is, it is this repository. Clone the repo
 
 You can compile, flash and run the binary on the Bluepill with this single command,
 ```
-cargo rb  dbw1 --release
+cargo rb hello --release
 ```
 Connect the STLink programmer to the Bluepill.
 

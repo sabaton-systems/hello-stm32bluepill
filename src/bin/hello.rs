@@ -8,7 +8,6 @@ use core::cell::RefCell;
 use core::convert::TryFrom;
 use core::str::Bytes;
 
-use bxcan::filter::{ListEntry16, Mask16};
 #[macro_use(singleton)]
 use cortex_m;
 
@@ -35,9 +34,6 @@ use stm32f1xx_hal::pac::rcc::csr::CSR_SPEC;
 
 use embedded_hal::digital::v2::OutputPin;
 
-use bxcan::{filter::Mask32, ExtendedId, Frame, Interrupts, Rx, StandardId, Tx};
-
-const CAN_TX_RETRY_TIMEOUT_MS : u32 = 25;
 
 #[global_allocator]
 static GLOBAL: FreeRtosAllocator = FreeRtosAllocator;
@@ -63,7 +59,7 @@ fn main() -> ! {
     let mut flash = dp.FLASH.constrain();
     let mut reset_flags = &dp.RCC.csr;
 
-    let reset_reason = halo_dbw::reset_reason::reset_reason(&reset_flags);
+    let reset_reason = hello::reset_reason::reset_reason(&reset_flags);
     
     let rcc = dp.RCC.constrain();
     let clocks = rcc
@@ -113,10 +109,6 @@ fn main() -> ! {
         .stack_size(128)
         .priority(TaskPriority(4))
         .start(move || {
-            let channels = unsafe { ANALOG_CHANNEL.as_ref().unwrap() };
-
-            let mut heartbeat_count: u16 = 0;
-           
             loop {
             
                 freertos_rust::CurrentTask::delay(Duration::ms(1000));
