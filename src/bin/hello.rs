@@ -24,14 +24,16 @@ use freertos_rust::{FreeRtosCharPtr, FreeRtosTaskHandle};
 use stm32f1xx_hal::can::Can;
 use stm32f1xx_hal::device::{CAN1, SPI1, SPI2, TIM2};
 use stm32f1xx_hal::dma::{RxTxDma, TxDma};
-use stm32f1xx_hal::gpio::{Alternate, Floating, Input, OutputSpeed, Pin, PushPull, CRH, CRL};
+use stm32f1xx_hal::gpio::{Alternate, Floating, Input, OutputSpeed, Pin, PushPull};
 use stm32f1xx_hal::spi::{Mode, NoMiso, Phase, Polarity, Spi, Spi1NoRemap, Spi2NoRemap};
 use stm32f1xx_hal::time::Hertz;
-use stm32f1xx_hal::timer::{CountDownTimer, Event};
+use stm32f1xx_hal::timer::{Event};
 use stm32f1xx_hal::watchdog::IndependentWatchdog;
-use stm32f1xx_hal::{delay::Delay, pac, pac::interrupt, prelude::*}; // STM32F1 specific functions
+use stm32f1xx_hal::{pac, pac::interrupt, prelude::*}; // STM32F1 specific functions
 use stm32f1xx_hal::pac::rcc::csr::CSR_SPEC;
-
+use stm32f1xx_hal;
+use stm32f1xx_hal::{
+    i2c::{BlockingI2c, DutyCycle, Mode as I2CMode}};
 use embedded_hal::digital::v2::OutputPin;
 
 
@@ -63,14 +65,19 @@ fn main() -> ! {
     
     let rcc = dp.RCC.constrain();
     let clocks = rcc
-        .cfgr
-        .use_hse(8.mhz())
-        .sysclk(72.mhz())
-        .hclk(64.mhz())
-        .pclk1(36.mhz())
-        .pclk2(64.mhz())
-        .freeze(&mut flash.acr);
-   
+    .cfgr
+    .use_hse(Hertz::MHz(8))
+    .sysclk(Hertz::MHz(72))
+    .hclk(Hertz::MHz(64))
+    .pclk1(Hertz::MHz(36))
+    .pclk2(Hertz::MHz(64))
+    .freeze(&mut flash.acr);
+
+
+    // pb8 and pb9 as I2C
+    let mut gpiob = dp.GPIOB.split();    
+    let scl = gpiob.pb8.into_alternate_open_drain(&mut gpiob.crh);
+    let sda = gpiob.pb9.into_alternate_open_drain(&mut gpiob.crh);
 
     let mut nvic = cp.NVIC;
 
@@ -87,6 +94,7 @@ fn main() -> ! {
         nvic.set_priority(stm32f1xx_hal::pac::Interrupt::USB_LP_CAN_RX0, 223);
     }
 
+    
     // Start of Freertos Tasks
     let hello_task = Task::new()
         .name("hlo")

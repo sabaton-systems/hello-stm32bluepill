@@ -40,6 +40,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "bxcan"
+version = "0.7.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "40ac3d0c0a542d0ab5521211f873f62706a7136df415676f676d347e5a41dd80"
+dependencies = [
+ "bitflags",
+ "embedded-hal",
+ "nb 1.1.0",
+ "vcell",
+]
+
+[[package]]
 name = "cast"
 version = "0.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -137,7 +149,7 @@ name = "eeprom"
 version = "0.2.0"
 source = "git+https://github.com/sjames/eeprom.git#5e0a4dafca58ff9b2084a4b1f4368f18a29b78bc"
 dependencies = [
- "stm32f1xx-hal",
+ "stm32f1xx-hal 0.8.0",
 ]
 
 [[package]]
@@ -145,6 +157,15 @@ name = "embedded-dma"
 version = "0.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "46c8c02e4347a0267ca60813c952017f4c5948c232474c6010a381a337f1bda4"
+dependencies = [
+ "stable_deref_trait",
+]
+
+[[package]]
+name = "embedded-dma"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "994f7e5b5cb23521c22304927195f236813053eb9c065dd2226a32ba64695446"
 dependencies = [
  "stable_deref_trait",
 ]
@@ -176,6 +197,31 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8ed4d1f7356542cd640004f488cc41358ced96b1efab1fead3753d868a93d504"
 
 [[package]]
+name = "fugit"
+version = "0.3.6"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7ab17bb279def6720d058cb6c052249938e7f99260ab534879281a95367a87e5"
+dependencies = [
+ "gcd",
+]
+
+[[package]]
+name = "fugit-timer"
+version = "0.1.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d9607bfc4c388f9d629704f56ede4a007546cad417b3bcd6fc7c87dc7edce04a"
+dependencies = [
+ "fugit",
+ "nb 1.1.0",
+]
+
+[[package]]
+name = "gcd"
+version = "2.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1d758ba1b47b00caf47f24925c0074ecb20d6dfcffe7f6d53395c0465674841a"
+
+[[package]]
 name = "hello"
 version = "0.2.0"
 dependencies = [
@@ -191,8 +237,8 @@ dependencies = [
  "panic-probe",
  "rand",
  "rust-fsm",
- "stm32f1",
- "stm32f1xx-hal",
+ "stm32f1 0.15.1",
+ "stm32f1xx-hal 0.10.0",
 ]
 
 [[package]]
@@ -346,19 +392,51 @@ dependencies = [
 ]
 
 [[package]]
+name = "stm32f1"
+version = "0.15.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f2dc80735831c28fe85384e1e28428fb6d201f67c696e369a239ed9c5eba369d"
+dependencies = [
+ "bare-metal 1.0.0",
+ "cortex-m",
+ "cortex-m-rt",
+ "vcell",
+]
+
+[[package]]
 name = "stm32f1xx-hal"
 version = "0.8.0"
 source = "git+https://github.com/sjames/stm32f1xx-hal.git#73c67cfd05934e91e57084b4da07d3e9e411a130"
 dependencies = [
- "bxcan",
+ "bxcan 0.6.2",
  "cast",
  "cortex-m",
  "cortex-m-rt",
- "embedded-dma",
+ "embedded-dma 0.1.2",
  "embedded-hal",
  "nb 1.1.0",
  "stm32-usbd",
- "stm32f1",
+ "stm32f1 0.14.0",
+ "void",
+]
+
+[[package]]
+name = "stm32f1xx-hal"
+version = "0.10.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "30845662b9ce46a2ec04da97666a2b32458bee5032bb0452d0caf1536a96a542"
+dependencies = [
+ "bitflags",
+ "bxcan 0.7.0",
+ "cortex-m",
+ "cortex-m-rt",
+ "embedded-dma 0.2.0",
+ "embedded-hal",
+ "fugit",
+ "fugit-timer",
+ "nb 1.1.0",
+ "stm32-usbd",
+ "stm32f1 0.15.1",
  "void",
 ]
 
