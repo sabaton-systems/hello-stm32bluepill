@@ -31,8 +31,11 @@ sudo apt install gcc-arm-none-eabi
 
 ## Getting the source
 
-You already know where the source code is, it is this repository. Clone the repository.
+You already know where the source code is, it is this repository. Clone the repository. Use the recurse-submodules flag to also download the FreeRTOS source code.
 
+```
+git clone https://github.com/sabaton-systems/hello-stm32bluepill.git --recurse-submodules
+```
 
 You can compile, flash and run the binary on the Bluepill with this single command,
 ```
